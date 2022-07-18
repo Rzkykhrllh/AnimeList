@@ -1,5 +1,6 @@
 import Header from "@components/Header";
 import Banner from "@components/Banner";
+import Row from "@components/Row";
 import Head from "next/head";
 import requests from "../utils/requests";
 import { TMovie, TGenre, TElement } from "../types/movie.type";
@@ -28,7 +29,7 @@ const Home = (props: Props) => {
     documentariesMovies,
   } = props;
 
-  console.log("netflix original", netflixOriginal);
+  console.log("documentariesMovies", documentariesMovies);
 
   return (
     <div className={"relative h-[2000px]"}>
@@ -42,6 +43,15 @@ const Home = (props: Props) => {
 
       <main className="relative pb-24 pl-4 lg:space-y-24 lg:pl-16">
         <Banner movies={netflixOriginal} />
+        <section className=" md:space-y-24">
+          <Row title="Trending Now" movies={trendingNow} />
+          <Row title="Top Rated" movies={topRated} />
+          <Row title="Action Movies" movies={actionMovies} />
+          <Row title="Comedy Movies" movies={comedyMovies} />
+          <Row title="Horror Movies" movies={horrorMovies} />
+          <Row title="Romance Movies" movies={romanceMovies} />
+          <Row title="Documentaries Movies" movies={documentariesMovies} />
+        </section>
       </main>
     </div>
   );
