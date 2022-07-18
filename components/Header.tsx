@@ -16,7 +16,6 @@ function Header({}: Props) {
       } else {
         setIsScrolled(false);
       }
-      console.log(window.scrollY, isScrolled);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -26,17 +25,15 @@ function Header({}: Props) {
     };
   }, []);
 
-  console.log(isScrolled)
-
   return (
-    <header className={`${isScrolled && "bg-[#c13e3e]"}`}>
+    <header className={`${isScrolled && "bg-[#141414]"}`}>
       <div className="flex items-center space-x-2 md:space-x-10">
         <Image
           src={
             "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
           }
           width={100}
-          height={100}
+          height={30}
           className="object-contain cursor-pointer"
           alt="Netflix Logo"
         />
