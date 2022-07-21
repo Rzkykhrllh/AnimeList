@@ -3,11 +3,13 @@ import Image from "next/image";
 
 import { BellIcon, SearchIcon } from "@heroicons/react/outline";
 import Link from "next/link";
+import useAuth from "hooks/useAuth";
 
 type Props = {};
 
 function Header({}: Props) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { logOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,16 +53,17 @@ function Header({}: Props) {
         <SearchIcon className="hidden h-8 lg:inline g-8" />
         <p className="hidden lg:inline">Kids</p>
         <BellIcon className="h-8 g-8" />
-        <Link href="/account">
-          <Image
-            src={
-              "https://occ-0-1190-2774.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABbme8JMz4rEKFJhtzpOKWFJ_6qX-0y5wwWyYvBhWS0VKFLa289dZ5zvRBggmFVWVPL2AAYE8xevD4jjLZjWumNo.png?r=a41"
-            }
-            alt="icon logo"
-            height={32}
-            width={32}
-          />
-        </Link>
+        {/* <Link href="/account"> */}
+        <Image
+          src={
+            "https://occ-0-1190-2774.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABbme8JMz4rEKFJhtzpOKWFJ_6qX-0y5wwWyYvBhWS0VKFLa289dZ5zvRBggmFVWVPL2AAYE8xevD4jjLZjWumNo.png?r=a41"
+          }
+          alt="icon logo"
+          height={32}
+          width={32}
+          onClick={logOut}
+        />
+        {/* </Link> */}
       </div>
     </header>
   );
