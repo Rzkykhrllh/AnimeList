@@ -4,6 +4,8 @@ import Image from "next/image";
 import { BASE_URL } from "constants/movie";
 import { FaPlay } from "react-icons/fa";
 import { InformationCircleIcon } from "@heroicons/react/outline";
+import { useRecoilState } from "recoil";
+import { modalState, movieState } from "atoms/modalAtom";
 
 type Props = {
   movies: TMovie[];
@@ -12,6 +14,9 @@ type Props = {
 const Banner = (props: Props) => {
   const { movies } = props;
   const [movie, setMovie] = useState<TMovie | null>(null);
+
+  const [showModal, setShowModal] = useRecoilState(modalState);
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
 
   useEffect(() => {
     setMovie(movies[Math.floor(Math.random() * movies.length)]);
@@ -40,7 +45,13 @@ const Banner = (props: Props) => {
           <FaPlay className="w-4 h-4 text-black md:w-7 md:h-7" />
           Play
         </button>
-        <button className="bannerButton bg-[gray]/70">
+        <button
+          className="bannerButton bg-[gray]/70"
+          onClick={() => {
+            setCurrentMovie(movie);
+            setShowModal(true);
+          }}
+        >
           More Info <InformationCircleIcon className="w-5 h-5 md:h-8 md:w-8" />
         </button>
       </div>

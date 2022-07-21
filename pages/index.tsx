@@ -1,10 +1,20 @@
+import requests from "../utils/requests";
+import { GetServerSideProps } from "next";
+import { useRecoilValue } from "recoil";
+
+// Component
+import Head from "next/head";
 import Header from "@components/Header";
 import Banner from "@components/Banner";
 import Row from "@components/Row";
-import Head from "next/head";
-import requests from "../utils/requests";
+import Modal from "@components/Modal"
+
+// Types
 import { TMovie, TGenre, TElement } from "../types/movie.type";
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+
+// Hooks
+import useAuth from "hooks/useAuth";
+import { modalState } from "atoms/modalAtom";
 
 type Props = {
   netflixOriginal: TMovie[];
@@ -29,7 +39,8 @@ const Home = (props: Props) => {
     documentariesMovies,
   } = props;
 
-  console.log("documentariesMovies", documentariesMovies);
+  const { loading } = useAuth();
+  const showModal = useRecoilValue(modalState);
 
   return (
     <div className={"relative md:h-[140vh] bg-gradient-to-b"}>
@@ -53,6 +64,8 @@ const Home = (props: Props) => {
           <Row title="Documentaries Movies" movies={documentariesMovies} />
         </section>
       </main>
+
+      {showModal && <Modal />}
     </div>
   );
 };
@@ -61,6 +74,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const netflixOriginal = await fetch(requests.fetchNetflixOriginals).then(
     (response) => response.json()
   );
+
   const trendingNow = await fetch(requests.fetchTrending).then((response) =>
     response.json()
   );

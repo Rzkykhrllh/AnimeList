@@ -71,7 +71,6 @@ const Login = ({}: Props) => {
           <label htmlFor="" className="inline-block w-full">
             <input
               type="email"
-              name=""
               id=""
               placeholder="Email"
               className="input"
@@ -87,7 +86,6 @@ const Login = ({}: Props) => {
           <label htmlFor="" className="inline-block w-full">
             <input
               type="password"
-              name=""
               id=""
               placeholder="Password"
               className="input"
@@ -123,3 +121,4 @@ const Login = ({}: Props) => {
 };
 
 export default Login;
+
