@@ -1,33 +1,50 @@
-export type TGenre =  {
-  id: number
-  name: string
-}
+type TTitle = {
+  romaji: string;
+  english: string;
+  native: string;
+  userPreferred: string;
+};
 
-export type TMovie = {
-  title: string
-  backdrop_path: string
-  media_type?: string
-  release_date?: string
-  first_air_date: string
-  genre_ids: number[]
-  id: number
-  name: string
-  origin_country: string[]
-  original_language: string
-  original_name: string
-  overview: string
-  popularity: number
-  poster_path: string
-  vote_average: number
-  vote_count: number
-}
+type TDate = {
+  year: string;
+  month: string;
+  day: string;
+};
 
-export type TElement = {
-  type:
-    | 'Bloopers'
-    | 'Featurette'
-    | 'Behind the Scenes'
-    | 'Clip'
-    | 'Trailer'
-    | 'Teaser'
-}
+type TCoverImage = {
+  extraLarge: string;
+  large: string;
+  medium: string;
+  color: string;
+};
+
+type TTrailer = {
+  site: string;
+  id: string;
+  thumbnail: string;
+};
+
+export type TAnime = {
+  description: string;
+  id: number;
+  title: TTitle;
+  format: string;
+  status: string;
+  startDate: TDate;
+  endDate: TDate;
+  episodes: number;
+  genres: string[];
+  season: string;
+  countryOfOrigin: string;
+  coverImage: TCoverImage;
+  bannerImage: string;
+  source: string;
+  trailer: TTrailer;
+  meanScore: number;
+};
+
+export type TAnimeList = TAnime[] | [];
+
+export type TAnimeCollections = {
+  [key: string]: TAnimeList;
+};

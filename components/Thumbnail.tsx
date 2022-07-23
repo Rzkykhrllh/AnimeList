@@ -1,18 +1,20 @@
 import Image from "next/image";
 import React from "react";
-import { TMovie } from "types/movie.type";
+import { TAnime } from "types/movie.type";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "atoms/modalAtom";
+import { modalState, animeState } from "atoms/modalAtom";
 
 type Props = {
-  movie: TMovie;
+  movie: TAnime;
 };
 
 function Thumbnail(props: Props) {
   const { movie } = props;
 
   const [showModal, setShowModal] = useRecoilState(modalState);
-  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
+  const [currentMovie, setCurrentMovie] = useRecoilState(animeState);
+
+  // console.log("movie", movie);
 
   return (
     <div
@@ -26,9 +28,7 @@ function Thumbnail(props: Props) {
         className="object-cover rounded-sm md:rounded"
         layout="fill"
         alt="thumbanil"
-        src={`https://image.tmdb.org/t/p/w500${
-          movie.backdrop_path || movie.poster_path
-        }`}
+        src={movie.bannerImage || movie.coverImage.large}
       />
     </div>
   );

@@ -1,15 +1,16 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import React, { useRef, useState } from "react";
-import { TMovie } from "types/movie.type";
+import { TAnime } from "types/movie.type";
 import Thumbnail from "@components/Thumbnail";
 
 type Props = {
-  movies: TMovie[];
+  movies: TAnime[];
   title: string;
 };
 
 function Row(props: Props) {
   const { movies, title } = props;
+  // console.log(movies)
 
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState(false);
@@ -46,7 +47,7 @@ function Row(props: Props) {
           ref={rowRef}
           className="flex items-center space-x-0.5 md:space-x-2.5 overflow-x-scroll scrollbar-hide"
         >
-          {movies.map((movie) => {
+          {movies?.map((movie) => {
             return <Thumbnail movie={movie} key={movie.id} />;
           })}
         </div>

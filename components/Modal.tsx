@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MuiModal from "@mui/material/Modal";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "atoms/modalAtom";
+import { modalState, animeState } from "atoms/modalAtom";
 import {
   PlusIcon,
   ThumbUpIcon,
@@ -9,7 +9,6 @@ import {
   VolumeUpIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { TElement, TGenre } from "types/movie.type";
 import ReactPlayer from "react-player";
 import { FaPlay } from "react-icons/fa";
 
@@ -17,45 +16,12 @@ type Props = {};
 
 const Modal = ({}: Props) => {
   const [showModal, setShowModal] = useRecoilState(modalState);
-  const [movie, setMovie] = useRecoilState(movieState);
-  const [trailer, setTrailer] = useState("");
-  const [genres, setGenres] = useState<TGenre[]>([]);
-  const [muted, setMuted] = useState(true);
-
-  useEffect(() => {
-    const fetchMovie = async () => {
-      console.log("movie", movie);
-
-      const data = await fetch(
-        `https://api.themoviedb.org/3/${
-          movie?.media_type === "tv" ? "tv" : "movie"
-        }/${movie?.id}?api_key=${
-          process.env.NEXT_PUBLIC_API_KEY
-        }&language=en-US&append_to_response=videos`
-      )
-        .then((response) => response.json())
-        .catch((err) => console.log(err.message));
-
-      if (data?.videos) {
-        const index = data.videos.results.findIndex(
-          (element: TElement) => element.type === "Trailer"
-        );
-        setTrailer(data.videos.results[index]?.key);
-      }
-
-      if (data?.genres) {
-        setGenres(data?.genres);
-      }
-    };
-
-    fetchMovie();
-  }, [movie]);
+  const [movie, setMovie] = useRecoilState(animeState);
+  const [muted, setMuted] = useState(false);
 
   const handleClose = () => {
     setShowModal(false);
   };
-
-  console.log(trailer, genres);
 
   return (
     <MuiModal
@@ -70,14 +36,18 @@ const Modal = ({}: Props) => {
 
         {/* Media Player */}
         <div className="relative pt-[56.25%]">
-          <ReactPlayer
-            url={`https://youtube.com/watch?v=${trailer}`}
-            height="100%"
-            width="100%"
-            style={{ position: "absolute", top: "0", left: "0", right: "0" }}
-            playing
-            muted={muted}
-          />
+          {!!movie?.trailer?.id && (
+            <ReactPlayer
+              url={`https://youtube.com/watch?v=${
+                movie?.trailer?.id
+              }`}
+              height="100%"
+              width="100%"
+              style={{ position: "absolute", top: "0", left: "0", right: "0" }}
+              playing
+              muted={muted}
+            />
+          )}
 
           <div className="absolute flex items-center justify-between w-full px-10 bottom-10">
             <div className="flex space-x-2 ">
@@ -108,31 +78,34 @@ const Modal = ({}: Props) => {
           <div className="space-y-6 text-lg">
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
-                {movie!.vote_average * 10}% Match
+                {movie?.meanScore}Match
               </p>
               <p className="font-light">
-                {movie?.release_date || movie?.first_air_date}
+                {`${movie?.startDate.day}/${movie?.startDate.month}/${movie?.startDate.year}`}
               </p>
               <div className="flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-xs">
                 HD
               </div>
             </div>
             <div className="flex flex-col font-light gap-x-10 gap-y-4 md:flex-row">
-              <p className="w-5/6">{movie?.overview}</p>
+              <p
+                className="w-5/6"
+                dangerouslySetInnerHTML={{ __html: movie?.description }}
+              >
+                {}
+              </p>
               <div className="flex flex-col space-y-3 text-sm">
                 <div>
                   <span className="text-[gray]">Genres:</span>{" "}
-                  {genres.map((genre) => genre.name).join(", ")}
+                  {movie?.genres.map((genre: string) => genre).join(", ")}
                 </div>
 
                 <div>
-                  <span className="text-[gray]">Original language:</span>{" "}
-                  {movie?.original_language}
+                  <span className="text-[gray]">Season:</span> {movie?.season}
                 </div>
 
                 <div>
-                  <span className="text-[gray]">Total votes:</span>{" "}
-                  {movie?.vote_count}
+                  <span className="text-[gray]">Format:</span> {movie?.format}
                 </div>
               </div>
             </div>
